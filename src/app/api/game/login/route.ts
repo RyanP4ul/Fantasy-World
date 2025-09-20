@@ -11,7 +11,7 @@ type Payload = {
         sToken: string;
         strEmail: string;
         unm: string;
-        intChatSlot: number;
+        intCharSlot: number;
         intMaxCharSlot: number;
     };
     characters: any[];
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
             sToken: user.Password,
             strEmail: user.Email,
             unm: user.Name,
-            intChatSlot: user.CharacterSlot,
+            intCharSlot: user.CharacterSlot,
             intMaxCharSlot: 6
         },
         characters: []
