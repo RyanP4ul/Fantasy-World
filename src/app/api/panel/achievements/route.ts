@@ -1,13 +1,29 @@
 import { db } from "@/db";
 import { achievements } from "@/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq, sql } from "drizzle-orm";
 import { achievementSchema } from "@/validations/panel/achievementSchema";
 
-export async function GET() {
+export async function GET(req : Request) {
+  const { searchParams } = new URL(req.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = 5;
+  const offset = (page - 1) * limit;
+
   const res = await db.query.achievements.findMany({
     orderBy: desc(achievements.id),
+    limit: limit,
+    offset: offset,
   });
-  return Response.json(res);
+
+  const [{ count }] = await db
+      .select({ count: sql<number>`COUNT(*)` })
+      .from(achievements);
+
+  return Response.json({
+    data: res,
+    total: count,
+    totalPages: Math.ceil(count / limit),
+  });
 }
 
 export async function POST(req: Request) {

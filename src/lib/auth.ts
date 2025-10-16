@@ -1,4 +1,4 @@
-import { users } from "@/db/schema";
+import { users, users_characters } from "@/db/schema";
 import { db } from "@/db";
 import { and, eq } from "drizzle-orm";
 import { compare } from "bcryptjs";
@@ -12,6 +12,7 @@ import NextAuth, {
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
 import DiscordProvider from "next-auth/providers/discord";
+import { getUserCharAuthByWhere } from "@/features/characters/characters";
 
 export const authOptions: NextAuthOptions = {
   debug: true,
@@ -70,10 +71,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const user = await db.query.users.findFirst({
-            columns: { id: true, Name: true, Hash: true, Email: true, Access: true, DiscordID: true, DiscordAvatar: true },
-            where: eq(users.Name, credentials?.username ?? ""),
-          });
+          const user = await getUserCharAuthByWhere(eq(users_characters.Name, credentials?.username ?? ""));
 
           if (!user) {
             throw new Error("No user found with this username");
@@ -81,7 +79,7 @@ export const authOptions: NextAuthOptions = {
 
           const isValidPassword = await compare(
             credentials?.password ?? "",
-            user.Hash
+            user.Password
           );
           if (!isValidPassword) throw new Error("Invalid password");
 
@@ -118,9 +116,7 @@ export const authOptions: NextAuthOptions = {
         const session = await getServerSession(authOptions);
 
         if (session) {
-          const user = await db.query.users.findFirst({
-            where: eq(users.id, Number(session.user.id) || -1),
-          });
+          const user = await getUserCharAuthByWhere(eq(users_characters.Name, session.user?.Name ?? ""));
 
           if (!user) {
             return "/account?error=User not found. Please connect your Discord account.";
@@ -173,22 +169,15 @@ export const authOptions: NextAuthOptions = {
       // console.log(`ACCOUNT: ${JSON.stringify(account)}`);
       // console.log(`PROFILE: ${JSON.stringify(profile)}`);
 
-      const fetchUser = async (where: any) => {
-        return await db.query.users.findFirst({
-          columns: { id: true, Name: true, Email: true, Access: true, DiscordID: true, DiscordAvatar: true },
-          where,
-        });
-      };
-
       let dbUser: any;
 
       if (account?.provider === "credentials") {
-        dbUser = await fetchUser(eq(users.id, Number(user?.id || -1)));
+        dbUser = await getUserCharAuthByWhere(eq(users_characters.id, Number(user?.id || -1)));
       } else if (account?.provider === "discord") {
-        dbUser = await fetchUser(eq(users.DiscordID, BigInt(profile?.id ?? 0)));
+        dbUser = await getUserCharAuthByWhere(eq(users.DiscordID, BigInt(profile?.id ?? 0)));
       } else {
-        dbUser = await fetchUser(
-          eq(users.id, Number((token.user as { id: string }).id))
+        dbUser = await getUserCharAuthByWhere(
+          eq(users_characters.id, Number((token.user as { id: string }).id))
         );
       }
 

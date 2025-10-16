@@ -30,30 +30,30 @@ export default function WebPosts({ data }: { data: any }) {
       <div className="space-y-6">
         {currentItems.map((item: any, index: number) => (
           <Card key={index} className="mb-4 py-0">
-            {item.Image && (
+            {item.image && (
               <img
-                src={`/api/assets/images/posts/${item.Image}`}
+                src={`/api/assets/web/announcements/${item.image}`}
                 alt="PlaceHOlder"
                 width={800}
                 height={400}
                 className="w-full h-auto rounded"
               />
             )}
-            <CardHeader className={`${!item.Image && "mt-5"}`}>
+            <CardHeader className={`${!item.image && "mt-5"}`}>
               <div className="flex items-center justify-between">
-                <CardTitle>{item.Title}</CardTitle>
-                <Badge variant="secondary">{item.Category}</Badge>
+                <CardTitle>{item.title}</CardTitle>
+                <Badge variant="secondary">{item.category}</Badge>
               </div>
               <CardDescription>
                 By{" "}
-                <Link href={`/charpage/${session?.user.Name}`} className="font-medium">
-                  {item.Author}
+                <Link href={`/charpage/${session?.user.name}`} className="font-medium">
+                  {item.author}
                 </Link>{" "}
                 •{" "}
-                {format(new Date(item.CreatedDate), "MM/dd/yyyy")}
+                {format(new Date(item.created_at), "MM/dd/yyyy")}
               </CardDescription>
             </CardHeader>
-            <CardContent className="mb-5">{item.Content}</CardContent>
+            <CardContent className="mb-5">{item.content}</CardContent>
           </Card>
         ))}
       </div>

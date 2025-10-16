@@ -16,9 +16,9 @@ import { BookOpen, Check, Download, Users } from "lucide-react";
 
 export default function Home() {
   const { data, isFetching } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["announcements"],
     queryFn: async () => {
-      const res = await fetch("/api/web/posts");
+      const res = await fetch("/api/web/announcements");
 
       if (!res.ok) {
         throw new Error("Error fetching table data");

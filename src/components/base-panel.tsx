@@ -33,7 +33,6 @@ import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { panel_logs } from "@/db/schema";
 import { db } from "@/db";
 import { isView } from "drizzle-orm";
 import { de } from "date-fns/locale";
@@ -81,7 +80,7 @@ export default function BasePanel<T>({
   const { isFetching, error } = useQuery({
     queryKey: ["table"],
     queryFn: async () => {
-      const res = await fetch(apiEndpoint);
+      const res = await fetch(`${apiEndpoint}`);
       if (!res.ok) {
         throw new Error("Error fetching table data");
       }

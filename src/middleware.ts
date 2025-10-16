@@ -1,7 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import LRU from "lru-cache";
 import type { NextRequest } from "next/server";
 
 const publicRoutes = ["/", "/login", "/register", "/api/auth"];
@@ -21,10 +20,6 @@ const adminOnlyRoutes = [
 
 export default withAuth(
   async function middleware(req: NextRequest) {
-
-    // const cookieName = process.env.NODE_ENV === "production" 
-    //   ? "__Secure-s3c_tkn_a9f4" 
-    //   : "s3c_tkn_a9f4";
 
     const token = await getToken({
       req,

@@ -1,17 +1,15 @@
 import { Description } from '@radix-ui/react-dialog';
 import { Index } from 'drizzle-orm/gel-core';
-import { mysqlTable, varchar, int, serial, decimal, smallint, mysqlEnum, tinyint, timestamp, bigint, char, datetime, boolean, date, longtext } from 'drizzle-orm/mysql-core';
+import { mysqlTable, varchar, text, int, serial, decimal, smallint, mysqlEnum, tinyint, timestamp, bigint, char, datetime, boolean, date, longtext } from 'drizzle-orm/mysql-core';
 import { Radius } from 'lucide-react';
 import { string } from 'zod';
 
 export const achievements = mysqlTable("achievements", {
   id: int("id", { unsigned: true }).primaryKey().notNull().autoincrement(),
   Name: varchar("Name", { length: 55 }).notNull(),
-  File: varchar("File", { length: 255 }).notNull().default("default.swf"),
   Image: varchar("Image", { length: 255 }).notNull().default("Achievement.png"),
-  Linkage: varchar("Linkage", { length: 60 }).default("Achievement"),
-  Shop: int("Shop").notNull().default(0),
   Description: longtext("Description").notNull(),
+  ShopID: int("ShopID").notNull().default(0)
 });
 
 export const areas = mysqlTable("areas", {
@@ -29,6 +27,7 @@ export const areas = mysqlTable("areas", {
   Dungeon: boolean("Dungeon").notNull().default(false),
   DamageMultiplier: decimal("DamageMultiplier", { precision: 7, scale: 2 }).notNull().default("1.00"),
   GuildLevel: int("GuildLevel", { unsigned: true }).notNull().default(0),
+  has_image: boolean("has_image").notNull().default(false),
   Created_At: timestamp("Created_At").notNull().defaultNow(),
   Updated_At: timestamp("Updated_At").notNull().defaultNow(),
 });
@@ -161,6 +160,34 @@ export const factions = mysqlTable("factions", {
   Name: varchar("Name", { length: 20 }).notNull(),
 });
 
+export const game_menu = mysqlTable('game_menu', {
+  id: serial('id').primaryKey(),
+  text: varchar('text', { length: 100 }).notNull(),
+  action: varchar('action', { length: 60 }).notNull(),
+  action_id: int('action_id').notNull(),
+  string_param: varchar('string_param', { length: 100 }).notNull(),
+  parent_frame: varchar('parent_frame', { length: 100 }).notNull(),
+  frame: varchar('frame', { length: 100 }).notNull(),
+  pad: varchar('pad', { length: 100 }).notNull(),
+  icon: varchar('icon', { length: 100 }).notNull(),
+  subheader_text: varchar('subheader_text', { length: 100 }).notNull(),
+  subheader_color: varchar('subheader_color', { length: 100 }).notNull(),
+  style: varchar('style', { length: 100 }).notNull(),
+  alt_mode: varchar('alt_mode', { length: 100 }).notNull(),
+  alt_text: varchar('alt_text', { length: 100 }).notNull(),
+  alt_icon: varchar('alt_icon', { length: 100 }).notNull(),
+  alt_subheader_text: varchar('alt_subheader_text', { length: 100 }).notNull(),
+  alt_subheader_color: varchar('alt_subheader_color', { length: 100 }).notNull()
+});
+
+export const game_menu_news = mysqlTable('game_menu_news', {
+  id: serial('id').primaryKey(),
+  label: varchar('label', { length: 100 }).notNull(),
+  image: varchar('image', { length: 100 }).notNull(),
+  button_1: varchar('button_1', { length: 100 }).notNull(),
+  button_2: varchar('button_2', { length: 100 }).notNull(),
+});
+
 export const global_drops = mysqlTable("global_drops", {
   id: int("id").primaryKey().notNull().autoincrement(),
   ItemID: int("ItemID").notNull(),
@@ -193,7 +220,7 @@ export const items = mysqlTable("items", {
   Name: varchar("Name", { length: 60 }).notNull(),
   Description: longtext("Description").notNull().default(""),
   Type: varchar("Type", { length: 16 }).notNull(),
-  Element: varchar("Element", { length: 16 }).notNull().default("None"),
+  ElementID: int("ElementID", { unsigned: true }),
   File: varchar("File", { length: 120 }),
   Link: varchar("Link", { length: 64 }),
   Icon: varchar("Icon", { length: 16 }).notNull(),
@@ -204,10 +231,12 @@ export const items = mysqlTable("items", {
   Rarity: int("Rarity").notNull().default(1),
   Quantity: smallint("Quantity", { unsigned: true }).notNull().default(1),
   Stack: smallint("Stack", { unsigned: true }).notNull().default(1),
-  Cost: int("Cost", { unsigned: true }).notNull().default(0),
-  Silver: boolean("Silver").notNull().default(false),
-  Gold: boolean("Gold").notNull().default(false),
+
+  Copper: int("Copper", { unsigned: true }).notNull().default(0),
+  Silver: int("Silver", { unsigned: true }).notNull().default(0),
+  Gold: int("Gold", { unsigned: true }).notNull().default(0),
   Sell: boolean("Sell").notNull().default(true),
+
   Temporary: boolean("Temporary").notNull().default(false),
   Upgrade: boolean("Upgrade").notNull().default(false),
   Staff: boolean("Staff").notNull().default(false),
@@ -455,6 +484,8 @@ export const users = mysqlTable("users", {
   Email: varchar("Email", { length: 255 }).notNull(),
   Password: varchar("Password", { length: 255 }).notNull(),
   CharacterSlot: tinyint("CharacterSlot", { unsigned: true }).notNull().default(3),
+  DiscordID: bigint({ mode: 'bigint'}).unique(),
+  DiscordAvatar: text("DiscordAvatar"),
   CreatedAt: timestamp("CreatedAt").notNull().defaultNow(),
   UpdatedAt: timestamp("UpdatedAt").notNull().defaultNow(),
 });
@@ -477,12 +508,12 @@ export const users_characters = mysqlTable("users_characters", {
   Silver: int("Silver", { unsigned: true }).notNull().default(0),
   Gold: int("Gold", { unsigned: true }).notNull().default(0),
   Exp: int("Exp", { unsigned: true }).notNull().default(0),
-  ColorHair: char("ColorHair", { length: 6 }).notNull().default("000000"),
-  ColorSkin: char("ColorSkin", { length: 6 }).notNull().default("000000"),
-  ColorEye: char("ColorEye", { length: 6 }).notNull().default("000000"),
-  ColorBase: char("ColorBase", { length: 6 }).notNull().default("000000"),
-  ColorTrim: char("ColorTrim", { length: 6 }).notNull().default("000000"),
-  ColorAccessory: char("ColorAccessory", { length: 6 }).notNull().default("000000"),
+  ColorHair: char("ColorHair", { length: 15 }).notNull().default("000000"),
+  ColorSkin: char("ColorSkin", { length: 15 }).notNull().default("000000"),
+  ColorEye: char("ColorEye", { length: 15 }).notNull().default("000000"),
+  ColorBase: char("ColorBase", { length: 15 }).notNull().default("000000"),
+  ColorTrim: char("ColorTrim", { length: 15 }).notNull().default("000000"),
+  ColorAccessory: char("ColorAccessory", { length: 15 }).notNull().default("000000"),
   ColorChat: varchar("ColorChat", { length: 60 }).notNull().default("0xFFFFFF"),
   SlotsAuction: smallint("SlotsAuction").notNull().default(10),
   SlotsBag: smallint("SlotsBag", { unsigned: true }).notNull().default(40),
@@ -516,6 +547,12 @@ export const users_characters = mysqlTable("users_characters", {
   Image: varchar("Image", { length: 255 }),
 });
 
+export const users_characters_achievements = mysqlTable("users_characters_achievements", {
+  id: int("id", { unsigned: true }).primaryKey().notNull().autoincrement(),
+  CharID: int("CharID", { unsigned: true }).primaryKey().notNull(),
+  AchievementID: int("AchievementID", { unsigned: true }).notNull()
+});
+
 export const users_characters_items = mysqlTable("users_characters_items", {
   id: int("id", { unsigned: true }).primaryKey().notNull().autoincrement(),
   CharID: int("CharID", { unsigned: true }).notNull(),
@@ -526,4 +563,28 @@ export const users_characters_items = mysqlTable("users_characters_items", {
   Bank: boolean("Bank").notNull().default(false),
   Favorite: boolean("Favorite").notNull().default(false),
   DatePurchased: datetime("DatePurchased", { mode: "date" }).notNull().default(new Date()),
+});
+
+export const users_characters_guilds = mysqlTable("users_characters_guilds", {
+  CharID: int("CharID", { unsigned: true }).primaryKey().notNull(),
+  GuildID: int("GuildID", { unsigned: true }).notNull(),
+  Rank: tinyint("Rank", { unsigned: true }).notNull().default(1),
+});
+
+export const users_characters_houses = mysqlTable("users_characters_houses", {
+  CharID: int("CharID", { unsigned: true }).primaryKey().notNull(),
+  ItemID: int("ItemID", { unsigned: true }).notNull(),
+  Frame: varchar("Frame", { length: 20 }).notNull().default("House1"),
+  X: int("X", { unsigned: true }).notNull().default(0),
+  Y: int("Y", { unsigned: true }).notNull().default(0),
+});
+
+export const web_announcements = mysqlTable("web_announcements", {
+  id: int("id", { unsigned: true }).primaryKey().notNull().autoincrement(),
+  title: varchar("title", { length: 50 }).notNull(),
+  category: varchar("category", { length: 50 }).notNull(),
+  content: text("content").notNull(),
+  image: text("image").notNull(),
+  created_at: datetime("created_at", { mode: "date" }).notNull().default(new Date()),
+  updated_at: datetime("updated_at", { mode: "date" }).notNull().default(new Date()),
 });

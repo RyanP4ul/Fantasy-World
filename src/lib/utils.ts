@@ -3,6 +3,14 @@ import { get } from "http";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+export function isDevelopment() {
+  return process.env.NODE_ENV === "development";
+}
+
+export function isProduction() {
+  return process.env.NODE_ENV === "production";
+}
+
 export const equipments = [
   "None",
   "Weapon",

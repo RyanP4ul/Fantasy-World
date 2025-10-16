@@ -1,4 +1,4 @@
-import { enhancements } from "./../../../../db/schema";
+import { enhancements } from "../../../../db/schema";
 import { db } from "@/db";
 import { items, monsters, quests } from "@/db/schema";
 import { eq } from "drizzle-orm";

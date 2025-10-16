@@ -1,20 +1,11 @@
+import { is } from 'drizzle-orm';
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import getDeviceType from "@/lib/user-agent";
+import { isProduction } from '@/lib/utils';
 
 const GAME_FILES_DIR = path.join(process.cwd(), "gamefiles");
-
-
-  // const userAgent = request.headers.get("user-agent") || "";
-
-  // let deviceType: "Windows" | "Mobile" | "Air" | "Unknown" = "Unknown";
-  // if (/Windows/i.test(userAgent)) {
-  //   deviceType = "Windows";
-  // } else if (/Mobile|Android|iPhone|iPad/i.test(userAgent)) {
-  //   deviceType = "Mobile";
-  // } else if (/AdobeAIR/i.test(userAgent)) {
-  //   deviceType = "Air";
-  // }
 
 export async function GET(
   req: Request,
@@ -22,34 +13,31 @@ export async function GET(
 ) {
   try {
 
+    const deviceType = getDeviceType(req);
     const relativePath = ((await context.params)?.path || "").join("/");
 
-    if (!relativePath.endsWith(".swf")) {
+    if (!(relativePath.endsWith(".swf") || relativePath.endsWith(".mp3"))) {
       return Response.json("Not found", { status: 404 });
     }
 
+/*
     const referer = req.headers.get("referer") || "";
 
-    if (!referer) {
+    if (!referer || isProduction() && (deviceType === "Unknown" || deviceType === "Windows")) {
       return Response.json({ error: "Access denied" }, { status: 403 });
     }
+	*/
 
     const filePath = path.join(GAME_FILES_DIR, relativePath);
 
-    // security: prevent path traversal ("../")
     if (!filePath.startsWith(GAME_FILES_DIR)) {
       return Response.json({ error: "Access denied" }, { status: 403 });
     }
 
     const stat = await fs.stat(filePath);
-
-    // read file
     const fileBuffer = await fs.readFile(filePath);
-
-    // convert Buffer to Uint8Array for NextResponse
     const uint8Array = new Uint8Array(fileBuffer);
 
-    // return as application/x-shockwave-flash
     return new NextResponse(uint8Array, {
       headers: {
         "Content-Type": "application/x-shockwave-flash",

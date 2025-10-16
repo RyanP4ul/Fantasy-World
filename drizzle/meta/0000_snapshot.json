@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "35f2af9b-8ced-496f-a474-2d97eb9f40e4",
+  "id": "6b6622aa-0027-4c6c-ace8-e53fb6646b69",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "achievements": {
@@ -21,14 +21,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "File": {
-          "name": "File",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'default.swf'"
-        },
         "Image": {
           "name": "Image",
           "type": "varchar(255)",
@@ -37,28 +29,20 @@
           "autoincrement": false,
           "default": "'Achievement.png'"
         },
-        "Linkage": {
-          "name": "Linkage",
-          "type": "varchar(60)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'Achievement'"
-        },
-        "Shop": {
-          "name": "Shop",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 0
-        },
         "Description": {
           "name": "Description",
           "type": "longtext",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "ShopID": {
+          "name": "ShopID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
         }
       },
       "indexes": {},
@@ -1083,6 +1067,194 @@
       "compositePrimaryKeys": {
         "factions_id": {
           "name": "factions_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "game_menu": {
+      "name": "game_menu",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "text": {
+          "name": "text",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "action": {
+          "name": "action",
+          "type": "varchar(60)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "action_id": {
+          "name": "action_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "string_param": {
+          "name": "string_param",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "parent_frame": {
+          "name": "parent_frame",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "frame": {
+          "name": "frame",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "pad": {
+          "name": "pad",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subheader_text": {
+          "name": "subheader_text",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subheader_color": {
+          "name": "subheader_color",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "style": {
+          "name": "style",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "alt_mode": {
+          "name": "alt_mode",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "alt_text": {
+          "name": "alt_text",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "alt_icon": {
+          "name": "alt_icon",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "alt_subheader_text": {
+          "name": "alt_subheader_text",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "alt_subheader_color": {
+          "name": "alt_subheader_color",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "game_menu_id": {
+          "name": "game_menu_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "game_menu_news": {
+      "name": "game_menu_news",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "label": {
+          "name": "label",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "button_1": {
+          "name": "button_1",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "button_2": {
+          "name": "button_2",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "game_menu_news_id": {
+          "name": "game_menu_news_id",
           "columns": [
             "id"
           ]
@@ -3120,8 +3292,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "EmailL": {
-          "name": "EmailL",
+        "Email": {
+          "name": "Email",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
@@ -3141,6 +3313,20 @@
           "notNull": true,
           "autoincrement": false,
           "default": 3
+        },
+        "DiscordID": {
+          "name": "DiscordID",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "DiscordAvatar": {
+          "name": "DiscordAvatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         },
         "CreatedAt": {
           "name": "CreatedAt",
@@ -3169,7 +3355,14 @@
           ]
         }
       },
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "users_DiscordID_unique": {
+          "name": "users_DiscordID_unique",
+          "columns": [
+            "DiscordID"
+          ]
+        }
+      },
       "checkConstraint": {}
     },
     "users_characters": {
@@ -3398,7 +3591,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-09-13 11:50:36.718'"
+          "default": "'2025-10-12 02:14:13.621'"
         },
         "LastLogin": {
           "name": "LastLogin",
@@ -3406,7 +3599,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-09-13 11:50:36.718'"
+          "default": "'2025-10-12 02:14:13.621'"
         },
         "LevelDate": {
           "name": "LevelDate",
@@ -3414,7 +3607,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-09-13 11:50:36.718'"
+          "default": "'2025-10-12 02:14:13.621'"
         },
         "BanExpire": {
           "name": "BanExpire",
@@ -3613,6 +3806,144 @@
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
+    "users_characters_achievements": {
+      "name": "users_characters_achievements",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "CharID": {
+          "name": "CharID",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "AchievementID": {
+          "name": "AchievementID",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "users_characters_achievements_id": {
+          "name": "users_characters_achievements_id",
+          "columns": [
+            "id"
+          ]
+        },
+        "users_characters_achievements_CharID": {
+          "name": "users_characters_achievements_CharID",
+          "columns": [
+            "CharID"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "users_characters_guilds": {
+      "name": "users_characters_guilds",
+      "columns": {
+        "CharID": {
+          "name": "CharID",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "GuildID": {
+          "name": "GuildID",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "Rank": {
+          "name": "Rank",
+          "type": "tinyint unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "users_characters_guilds_CharID": {
+          "name": "users_characters_guilds_CharID",
+          "columns": [
+            "CharID"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "users_characters_houses": {
+      "name": "users_characters_houses",
+      "columns": {
+        "CharID": {
+          "name": "CharID",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ItemID": {
+          "name": "ItemID",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "Frame": {
+          "name": "Frame",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'House1'"
+        },
+        "X": {
+          "name": "X",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "Y": {
+          "name": "Y",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "users_characters_houses_CharID": {
+          "name": "users_characters_houses_CharID",
+          "columns": [
+            "CharID"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
     "users_characters_items": {
       "name": "users_characters_items",
       "columns": {
@@ -3683,7 +4014,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-09-13 11:50:36.719'"
+          "default": "'2025-10-12 02:14:13.624'"
         }
       },
       "indexes": {},
@@ -3691,6 +4022,74 @@
       "compositePrimaryKeys": {
         "users_characters_items_id": {
           "name": "users_characters_items_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "web_announcements": {
+      "name": "web_announcements",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'2025-10-12 02:14:13.624'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'2025-10-12 02:14:13.625'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "web_announcements_id": {
+          "name": "web_announcements_id",
           "columns": [
             "id"
           ]

@@ -18,7 +18,7 @@ export default function Page() {
         id="AQWGame"
         type="application/x-shockwave-flash"
         name="flashContent"
-        data={`/gamefiles/${GAME_LOADER}`}
+        data={`/gamefiles/loader_7.swf`}
         style={{
           width: "100%",
           height: "100%",
