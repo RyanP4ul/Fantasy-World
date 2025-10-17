@@ -42,7 +42,6 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { ChevronDown, Loader2Icon } from "lucide-react";
 import React from "react";
-import { is } from "drizzle-orm";
 
 type Props = {
   data: unknown[];

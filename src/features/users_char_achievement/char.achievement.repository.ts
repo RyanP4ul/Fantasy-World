@@ -1,22 +1,7 @@
+import { achievements, users_characters_achievements as char_ach } from "@/db/schema";
+import { type Achievement } from "../achievements/achievements.repository";
 import { db } from "@/db";
-import {
-  achievements,
-  users,
-  users_characters_achievements as char_ach,
-} from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-type Achievement = {
-  id: number;
-  Name: string;
-  Description: string;
-  Image: string;
-  ShopID: number;
-};
-
-export async function getAchievements() {
-  return db.query.achievements.findMany();
-}
 
 export async function getCharAchievementById(
   charId: number

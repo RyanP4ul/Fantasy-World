@@ -1,4 +1,4 @@
-import { getCharAchievementById } from "@/features/achievements/achievements";
+import { getCharAchievementById } from "@/features/achievements/achievements.repository";
 import { parseFlashUrlencoded } from "@/lib/parse";
 
 export async function POST(req: Request) {

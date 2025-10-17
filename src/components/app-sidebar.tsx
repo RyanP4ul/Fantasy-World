@@ -63,7 +63,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Badge } from "./ui/badge";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { getRoles } from "@/lib/utils";
 
 const navigation = [
@@ -87,33 +87,33 @@ const navigation = [
       },
     ],
   },
-  // {
-  //   title: "Server",
-  //   access: 60,
-  //   items: [
-  //     {
-  //       title: "Game Rooms",
-  //       url: "/",
-  //       icon: faPersonBooth,
-  //       disabled: true,
-  //       access: 60,
-  //     },
-  //     {
-  //       title: "Game Users",
-  //       url: "/",
-  //       icon: faUsers,
-  //       disabled: true,
-  //       access: 60,
-  //     },
-  //     {
-  //       title: "Game Settings",
-  //       url: "/",
-  //       icon: faGears,
-  //       disabled: true,
-  //       access: 60,
-  //     },
-  //   ],
-  // },
+  {
+    title: "Server",
+    access: 60,
+    items: [
+      {
+        title: "Game Rooms",
+        url: "/",
+        icon: faPersonBooth,
+        disabled: true,
+        access: 60,
+      },
+      {
+        title: "Game Users",
+        url: "/",
+        icon: faUsers,
+        disabled: true,
+        access: 60,
+      },
+      {
+        title: "Game Settings",
+        url: "/",
+        icon: faGears,
+        disabled: true,
+        access: 60,
+      },
+    ],
+  },
   {
     title: "Web",
     access: 40,
@@ -628,9 +628,12 @@ const navigation = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession();
+  //const { data: session } = useSession();
+  const session = getSession();
   const currentPath = usePathname();
 
+  console.log("session", session);
+  console.log(session?.data);
   console.log(currentPath);
 
   return (

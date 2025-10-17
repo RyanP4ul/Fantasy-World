@@ -7,3 +7,5 @@ export const achievementSchema = z.object({
   Image: z.string().nonempty(),
   Description: z.string().nonempty(),
 });
+
+export type achievementType = z.infer<typeof achievementSchema>;
